@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ek Diya Jalaiye</title>
+<meta name="description" content="Aaj amavas ki raat hai. Paanch diye rakhe hain, ek-ek karke jalaiye.">
+<meta name="theme-color" content="#0b0811">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ek Diya Jalaiye">
+<meta property="og:description" content="Aaj amavas ki raat hai. Paanch diye rakhe hain, ek-ek karke jalaiye.">
+<meta property="og:url" content="https://hyyuse.github.io/diwali/">
+<meta property="og:image" content="https://hyyuse.github.io/diwali/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 6C40 20 46 30 42 42C39 50 25 50 22 42C18 30 24 20 32 6Z' fill='%23ffb238'/%3E%3Cpath d='M8 46C10 58 54 58 56 46Z' fill='%23b65a30'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&family=Tiro+Devanagari+Hindi&display=swap">
+<style>
+:root{
+  /* Layout: a moonless Kartik night. Words hang in the sky; five diyas sit on the front rim of a rangoli that only their light reveals. */
+  --night:#0b0811;
+  --dusk:#1e1229;
+  --flame:#ffb238;
+  --flame-core:#fff3d4;
+  --ink:#f6ece0;
+  --muted:#bcaec2;
+  --display:"Tiro Devanagari Hindi","Noto Serif Devanagari",Georgia,serif;
+  --body:"Mukta","Noto Sans",system-ui,-apple-system,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--night);color:var(--ink);font-family:var(--body);overflow:hidden;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+#sky{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.app{position:relative;z-index:1;height:100%;max-width:560px;margin:0 auto;padding:18px 20px 14px;display:grid;grid-template-rows:auto 1fr auto;overflow-y:auto}
+
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0}
+.sound{display:inline-flex;align-items:center;gap:7px;font:600 13px/1 var(--body);letter-spacing:.04em;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:8px 12px 8px 10px;cursor:pointer}
+.sound svg{width:16px;height:16px}
+.sound .waves{transition:opacity .2s}
+.sound[aria-pressed="false"] .waves{opacity:0}
+
+.moon{position:absolute;top:70px;right:22px;display:grid;justify-items:center;gap:8px;pointer-events:none}
+.moon i{width:40px;height:40px;border-radius:50%;border:1.5px dashed rgba(246,236,224,.32)}
+.moon span{font-size:12px;color:var(--muted);letter-spacing:.03em;white-space:nowrap}
+
+.stage{align-self:center;display:grid;padding:100px 0 8px}
+.panel{grid-area:1/1;opacity:0;transform:translateY(10px);transition:opacity .55s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.panel.in{opacity:1;transform:none}
+.panel[hidden]{display:none}
+h1,.line-text{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0}
+
+#intro h1{font-size:clamp(32px,8.8vw,46px);line-height:1.14;max-width:12ch}
+#intro p{font-size:18px;line-height:1.5;color:var(--muted);max-width:30ch;margin:16px 0 0}
+
+.label{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--flame);margin:0 0 12px}
+.line-text{font-size:clamp(27px,7.4vw,36px);line-height:1.24;max-width:19ch}
+#lineInner{transition:opacity .35s ease,transform .45s ease;opacity:0;transform:translateY(6px)}
+#lineInner.in{opacity:1;transform:none}
+
+#finale .deva{font-size:clamp(50px,14.5vw,72px);line-height:1.25;color:var(--flame-core);text-shadow:0 0 30px rgba(255,170,60,.5)}
+#finale .latin{font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--flame);margin:2px 0 18px}
+#finale .closing{font-family:var(--display);font-size:clamp(21px,5.6vw,26px);line-height:1.35;max-width:22ch;margin:0;text-wrap:balance}
+#finale .nudge{font-size:17px;color:var(--muted);margin:14px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.btn{font:600 16px/1 var(--body);padding:14px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--flame);border-color:var(--flame);color:#2a1606}
+.btn svg{width:18px;height:18px}
+.fallback{margin-top:12px;display:grid;gap:6px;font-size:14px;color:var(--muted)}
+.fallback input{font:15px var(--body);color:var(--ink);background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:10px 12px;width:100%}
+.fallback[hidden]{display:none}
+
+.floor{display:grid;justify-items:center;gap:12px;padding-top:clamp(36px,9vh,92px)}
+.row{width:100%;max-width:440px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 2px}
+.diya{flex:0 0 auto;width:min(18.5%,78px);aspect-ratio:100/130;background:none;border:0;padding:0;margin:0;position:relative;cursor:pointer;border-radius:16px;touch-action:manipulation}
+.diya:nth-child(1),.diya:nth-child(5){transform:translateY(-10px)}
+.diya:nth-child(2),.diya:nth-child(4){transform:translateY(1px)}
+.diya:nth-child(3){transform:translateY(8px)}
+.diya svg{position:relative;width:100%;height:100%;display:block;overflow:visible}
+.diya .glow{position:absolute;left:50%;top:38%;width:300%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,190,90,.5) 0%,rgba(255,135,45,.16) 34%,rgba(255,110,30,0) 66%);opacity:0;transition:opacity 1.2s ease;pointer-events:none}
+.diya.lit .glow{opacity:1;animation:breathe 3.4s ease-in-out infinite}
+.flame{transform-box:fill-box;transform-origin:50% 100%;opacity:0;transform:scale(.15);transition:opacity .45s ease,transform .7s cubic-bezier(.2,1.5,.4,1)}
+.diya.lit .flame{opacity:1;transform:scale(1)}
+.flame-inner{transform-box:fill-box;transform-origin:50% 100%}
+.diya.lit .flame-inner{animation:flicker 2.4s ease-in-out infinite}
+.diya.puff .flame-inner{animation:puff .6s ease-out}
+.shade{transition:opacity 1.1s ease}
+.diya.lit .shade{opacity:0}
+.rimlight{opacity:0;transition:opacity 1.1s ease}
+.diya.lit .rimlight{opacity:1}
+.spark{opacity:0;transform-box:fill-box;transform-origin:center}
+.diya.next .spark{animation:spark 1.8s ease-in-out infinite}
+
+.hint{margin:0;min-height:40px;display:flex;align-items:center;gap:12px;font-size:15px;color:var(--muted)}
+.hint[hidden]{display:none}
+.count{font-variant-numeric:tabular-nums;color:var(--ink);opacity:.85;font-weight:600}
+.replay{font:600 15px/1 var(--body);color:var(--muted);background:none;border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:11px 16px;cursor:pointer;min-height:40px}
+.replay[hidden]{display:none}
+
+:focus-visible{outline:2px dashed var(--flame);outline-offset:4px}
+
+@keyframes flicker{
+  0%,100%{transform:scale(1,1) skewX(0deg)}
+  20%{transform:scale(.95,1.06) skewX(2.5deg)}
+  45%{transform:scale(1.04,.96) skewX(-2deg)}
+  70%{transform:scale(.97,1.04) skewX(1.2deg)}
+}
+@keyframes puff{0%{transform:scale(1)}30%{transform:scale(.7,.55) skewX(-12deg)}100%{transform:scale(1)}}
+@keyframes breathe{0%,100%{opacity:.85}50%{opacity:1}}
+@keyframes spark{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.95;transform:scale(1.3)}}
+
+@media (max-height:660px){
+  .stage{padding-top:84px}
+  #intro h1{font-size:clamp(28px,8vw,38px)}
+  #intro p{font-size:16px;margin-top:10px}
+  .line-text{font-size:clamp(24px,6.6vw,30px)}
+  #finale .deva{font-size:clamp(42px,12vw,56px)}
+  #finale .latin{margin-bottom:10px}
+  #finale .closing{font-size:20px}
+  #finale .nudge{font-size:15px;margin-top:8px}
+  .floor{padding-top:28px}
+  .moon{top:62px}
+}
+@media (prefers-reduced-motion:reduce){
+  .panel,#lineInner,.flame,.glow,.shade,.rimlight{transition-duration:.01s}
+  .diya.lit .flame-inner,.diya.lit .glow,.diya.next .spark,.diya.puff .flame-inner{animation:none}
+  .diya.next .spark{opacity:.8}
+}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="gClay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cf6d3c"/><stop offset=".55" stop-color="#a9492a"/><stop offset="1" stop-color="#6a2814"/>
+    </linearGradient>
+    <radialGradient id="gOil" cx=".5" cy=".5" r=".6">
+      <stop offset="0" stop-color="#4a2410"/><stop offset="1" stop-color="#1f0e07"/>
+    </radialGradient>
+    <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff6a2a" stop-opacity="0"/>
+      <stop offset=".22" stop-color="#ff7d2a" stop-opacity=".85"/>
+      <stop offset=".6" stop-color="#ffb238"/>
+      <stop offset="1" stop-color="#ffd884"/>
+    </linearGradient>
+    <linearGradient id="gCore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffaf0"/><stop offset="1" stop-color="#ffe6a0"/>
+    </linearGradient>
+    <clipPath id="cBowl"><path d="M5 92 C9 122 91 122 95 92 Z"/></clipPath>
+  </defs>
+</svg>
+
+<main class="app">
+  <header>
+    <p class="eyebrow">Kartik Amavas</p>
+    <button class="sound" id="sound" type="button" aria-pressed="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="waves" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <span class="sound-label">Sound on</span>
+    </button>
+  </header>
+
+  <div class="moon" aria-hidden="true"><i></i><span id="moonCap">chaand · aaj chhutti pe</span></div>
+
+  <div class="stage">
+    <section class="panel in" id="intro">
+      <h1>Aaj amavas ki raat hai.</h1>
+      <p>Aasmaan aaj roshni nahi dega, toh yeh responsibility aapki hai. Paanch diye rakhe hain, ek-ek karke jalaiye.</p>
+    </section>
+
+    <section class="panel" id="line" hidden aria-live="polite">
+      <div id="lineInner" class="in">
+        <p class="label" id="lineLabel"></p>
+        <p class="line-text" id="lineText"></p>
+      </div>
+    </section>
+
+    <section class="panel" id="finale" hidden aria-live="polite">
+      <h1 class="deva" lang="hi">शुभ दीपावली</h1>
+      <p class="latin">Shubh Deepavali</p>
+      <p class="closing">Andhera kitna bhi ho, ek diya kaafi hota hai. Aapne toh paanch jala diye.</p>
+    </section>
+  </div>
+
+  <div class="floor">
+    <div class="row" id="row"></div>
+    <p class="hint" id="hint"><span id="hintText">Diye pe tap kijiye</span><span class="count" id="count">0 / 5</span></p>
+    <button class="replay" id="replay" type="button" hidden>Phir se jalaiye</button>
+  </div>
+</main>
+
+<script>
+(() => {
+  const LINES = [
+    { label: "Pehla diya · khushiyon ke naam", text: "Aapke ghar mein utni khushiyan hon, jitne aaj diye jal rahe hain." },
+    { label: "Doosra diya · mithai ke naam", text: "Mithai meethi ho, aur baatein usse bhi meethi." },
+    { label: "Teesra diya · sapnon ke naam", text: "Jo sapne abhi pending hain, woh is saal poore hon." },
+    { label: "Chautha diya · health ke naam", text: "Ghar mein sab healthy rahein, sab saath rahein. That's the real wealth." },
+    { label: "Paanchva diya · aapke naam", text: "Aapki smile hamesha aise hi chamakti rahe." }
+  ];
+  const NOTES = [587.33, 659.25, 739.99, 880.0, 987.77];
+  const ORD = ["Pehla", "Doosra", "Teesra", "Chautha", "Paanchva"];
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TAU = Math.PI * 2;
+  const $ = (s) => document.querySelector(s);
+
+  const row = $("#row"), hint = $("#hint"), hintText = $("#hintText"), count = $("#count");
+  const intro = $("#intro"), linePanel = $("#line"), lineInner = $("#lineInner");
+  const lineLabel = $("#lineLabel"), lineText = $("#lineText"), finale = $("#finale");
+  const moonCap = $("#moonCap"), replay = $("#replay"), soundBtn = $("#sound");
+
+  /* ---------- Diyas ---------- */
+  function diyaSVG(i) {
+    const dur = (2.1 + i * 0.37).toFixed(2), del = (i * 0.55).toFixed(2);
+    return `<svg viewBox="0 0 100 130" aria-hidden="true" focusable="false">
+      <g class="flame"><g class="flame-inner" style="animation-duration:${dur}s;animation-delay:-${del}s">
+        <path d="M50 16 C61 37 67 54 62 66 C58 76 42 76 38 66 C33 54 39 37 50 16Z" fill="url(#gOuter)"/>
+        <path d="M50 41 C56 53 58 61 55 68 C53 73 47 73 45 68 C42 61 44 53 50 41Z" fill="url(#gCore)"/>
+        <ellipse cx="50" cy="73.5" rx="4.5" ry="3" fill="#86b6ff" opacity=".55"/>
+      </g></g>
+      <circle class="spark" cx="50" cy="78" r="3.4" fill="#ffd27a"/>
+      <ellipse cx="50" cy="117" rx="15" ry="4.5" fill="#5a2411"/>
+      <path d="M5 92 C9 122 91 122 95 92 Z" fill="url(#gClay)"/>
+      <g clip-path="url(#cBowl)">
+        <path d="M8 98 L16 102.5 L24 98 L32 102.5 L40 98 L48 102.5 L56 98 L64 102.5 L72 98 L80 102.5 L88 98 L96 102.5" fill="none" stroke="#f2b45e" stroke-width="1.8" stroke-linejoin="round" opacity=".9"/>
+        <g fill="#ffd98a"><circle cx="27" cy="107" r="1.9"/><circle cx="38.5" cy="109.5" r="1.9"/><circle cx="50" cy="110.5" r="1.9"/><circle cx="61.5" cy="109.5" r="1.9"/><circle cx="73" cy="107" r="1.9"/></g>
+      </g>
+      <ellipse cx="50" cy="92" rx="45" ry="8" fill="#7d3118"/>
+      <ellipse cx="50" cy="92" rx="40" ry="5.5" fill="url(#gOil)"/>
+      <ellipse class="rimlight" cx="50" cy="91" rx="44" ry="7.4" fill="none" stroke="#ffc878" stroke-width="1.2" opacity=".7"/>
+      <path d="M41 93 Q50 82.5 59 93 Q50 97 41 93Z" fill="#9c4421"/>
+      <path d="M50 90 Q51.6 84 50 79" fill="none" stroke="#2b1a12" stroke-width="2.4" stroke-linecap="round"/>
+      <g class="shade" fill="#0b0811" opacity=".6">
+        <path d="M5 92 C9 122 91 122 95 92 Z"/><ellipse cx="50" cy="92" rx="45" ry="8"/><ellipse cx="50" cy="117" rx="15" ry="4.5"/>
+      </g>
+    </svg>`;
+  }
+
+  const diyas = [];
+  for (let i = 0; i < 5; i++) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "diya";
+    b.id = "diya" + (i + 1);
+    b.setAttribute("aria-label", `${ORD[i]} diya jalaiye`);
+    b.innerHTML = '<span class="glow"></span>' + diyaSVG(i);
+    b.addEventListener("click", () => light(i));
+    row.appendChild(b);
+    diyas.push({ el: b, lit: false, glow: 0, pos: { x: 0, y: 0, foot: 0 } });
+  }
+
+  let lit = 0, finaleOn = false, timers = [], current = intro;
+
+  function markNext() {
+    const n = diyas.findIndex((d) => !d.lit);
+    diyas.forEach((d, i) => d.el.classList.toggle("next", i === n));
+  }
+  markNext();
+
+  function later(fn, ms) { timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms)); }
+
+  function swapPanel(from, to) {
+    if (from === to) return;
+    from.classList.remove("in");
+    later(() => {
+      from.hidden = true;
+      to.hidden = false;
+      void to.offsetWidth;
+      to.classList.add("in");
+    }, 380);
+    current = to;
+  }
+
+  function showLine(L) {
+    if (current !== linePanel) {
+      lineLabel.textContent = L.label;
+      lineText.textContent = L.text;
+      lineInner.classList.add("in");
+      swapPanel(current, linePanel);
+      return;
+    }
+    lineInner.classList.remove("in");
+    later(() => {
+      lineLabel.textContent = L.label;
+      lineText.textContent = L.text;
+      void lineInner.offsetWidth;
+      lineInner.classList.add("in");
+    }, 300);
+  }
+
+  function light(i) {
+    const d = diyas[i];
+    if (d.lit) { flick(d); return; }
+    if (finaleOn) return;
+    d.lit = true;
+    d.el.classList.add("lit");
+    d.el.setAttribute("aria-label", `${ORD[i]} diya jal raha hai`);
+    bell(NOTES[lit]);
+    buzz();
+    burst(d, 18);
+    lit++;
+    markNext();
+    count.textContent = `${lit} / 5`;
+    hintText.textContent = lit < 5 ? "Agla diya jalaiye" : "Saare diye jal gaye";
+    showLine(LINES[lit - 1]);
+    if (lit === 5) later(goFinale, 3600);
+  }
+
+  function flick(d) {
+    d.el.classList.remove("puff");
+    void d.el.offsetWidth;
+    d.el.classList.add("puff");
+    burst(d, 6);
+  }
+
+  function goFinale() {
+    finaleOn = true;
+    chord();
+    swapPanel(current, finale);
+    moonCap.textContent = "chaand ki zaroorat bhi nahi";
+    hint.hidden = true;
+    replay.hidden = false;
+  }
+
+  function reset() {
+    timers.forEach(clearTimeout);
+    timers = [];
+    finaleOn = false;
+    lit = 0;
+    diyas.forEach((d, i) => {
+      d.lit = false;
+      d.el.classList.remove("lit", "puff");
+      d.el.setAttribute("aria-label", `${ORD[i]} diya jalaiye`);
+    });
+    markNext();
+    count.textContent = "0 / 5";
+    hintText.textContent = "Diye pe tap kijiye";
+    hint.hidden = false;
+    replay.hidden = true;
+    moonCap.textContent = "chaand · aaj chhutti pe";
+    lineInner.classList.add("in");
+    [linePanel, finale].forEach((p) => { if (p !== current) { p.hidden = true; p.classList.remove("in"); } });
+    swapPanel(current, intro);
+  }
+  replay.addEventListener("click", reset);
+
+  /* ---------- Sound ---------- */
+  let ac = null, soundOn = true;
+  function audio() {
+    if (!ac) {
+      try { ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { ac = null; }
+    }
+    if (ac && ac.state === "suspended") ac.resume().catch(() => {});
+    return ac;
+  }
+  function bell(freq, when = 0, gain = 0.16, dur = 2.8) {
+    if (!soundOn) return;
+    const a = audio();
+    if (!a) return;
+    try {
+      const t = a.currentTime + when + 0.01;
+      const out = a.createGain();
+      out.gain.setValueAtTime(0.0001, t);
+      out.gain.exponentialRampToValueAtTime(gain, t + 0.012);
+      out.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      out.connect(a.destination);
+      [[1, 1], [2.76, 0.32], [5.4, 0.1]].forEach(([m, g]) => {
+        const o = a.createOscillator();
+        const og = a.createGain();
+        o.type = "sine";
+        o.frequency.value = freq * m;
+        og.gain.value = g;
+        o.connect(og); og.connect(out);
+        o.start(t); o.stop(t + dur + 0.05);
+      });
+    } catch (e) {}
+  }
+  function chord() {
+    [587.33, 739.99, 880, 1174.66].forEach((f, k) => bell(f, k * 0.14, 0.1, 3.8));
+    bell(293.66, 0, 0.07, 4.4);
+  }
+  function buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+  soundBtn.addEventListener("click", () => {
+    soundOn = !soundOn;
+    soundBtn.setAttribute("aria-pressed", String(soundOn));
+    soundBtn.querySelector(".sound-label").textContent = soundOn ? "Sound on" : "Sound off";
+    if (soundOn) audio();
+  });
+
+  /* ---------- Sky, rangoli, embers ---------- */
+  const cv = $("#sky"), c = cv.getContext("2d");
+  const tmp = document.createElement("canvas"), t2 = tmp.getContext("2d");
+  let W = 0, H = 0, DPR = 1, R = 200, RY = 72, rang = null;
+  let stars = [], town = [], embers = [];
+  let warmth = 0, finaleK = 0;
+
+  function petal(g, a, r0, r1, w, color) {
+    g.save();
+    g.rotate(a);
+    g.beginPath();
+    g.moveTo(r0, 0);
+    g.quadraticCurveTo((r0 + r1) / 2, -w, r1, 0);
+    g.quadraticCurveTo((r0 + r1) / 2, w, r0, 0);
+    g.fillStyle = color;
+    g.fill();
+    g.restore();
+  }
+  function dotRing(g, r, n, s, color) {
+    g.fillStyle = color;
+    for (let k = 0; k < n; k++) {
+      const a = (k / n) * TAU;
+      g.beginPath();
+      g.arc(Math.cos(a) * r, Math.sin(a) * r, s, 0, TAU);
+      g.fill();
+    }
+  }
+  function buildRangoli() {
+    const S = Math.ceil(2 * R * DPR);
+    const o = document.createElement("canvas");
+    o.width = o.height = S;
+    const g = o.getContext("2d");
+    g.translate(S / 2, S / 2);
+    const r = (S / 2) * 0.98;
+    const C = { saffron: "#ff8a1f", magenta: "#d8327a", marigold: "#ffc23d", teal: "#1fa79b", green: "#7cc243", white: "#fff1dc", red: "#c42638" };
+    dotRing(g, r * 0.97, 60, r * 0.012, C.white);
+    for (let k = 0; k < 28; k++) {
+      g.save();
+      g.rotate((k / 28) * TAU);
+      g.beginPath();
+      g.arc(r * 0.865, 0, r * 0.072, 0, TAU);
+      g.fillStyle = k % 2 ? C.magenta : C.saffron;
+      g.fill();
+      g.restore();
+    }
+    g.beginPath(); g.arc(0, 0, r * 0.785, 0, TAU); g.lineWidth = r * 0.028; g.strokeStyle = C.marigold; g.stroke();
+    for (let k = 0; k < 16; k++) petal(g, (k / 16) * TAU, r * 0.36, r * 0.76, r * 0.11, k % 2 ? C.teal : C.magenta);
+    for (let k = 0; k < 16; k++) petal(g, ((k + 0.5) / 16) * TAU, r * 0.42, r * 0.64, r * 0.05, C.marigold);
+    dotRing(g, r * 0.34, 24, r * 0.014, C.white);
+    for (let k = 0; k < 8; k++) petal(g, (k / 8) * TAU, r * 0.1, r * 0.31, r * 0.09, k % 2 ? C.saffron : C.green);
+    g.beginPath(); g.arc(0, 0, r * 0.11, 0, TAU); g.fillStyle = C.red; g.fill();
+    g.beginPath(); g.arc(0, 0, r * 0.05, 0, TAU); g.fillStyle = C.marigold; g.fill();
+    rang = o;
+  }
+  function buildStars() {
+    stars = [];
+    const n = Math.min(230, Math.round((W * H) / 3600));
+    for (let k = 0; k < n; k++) {
+      stars.push({ x: Math.random() * W, y: Math.random() * H * 0.62, s: 0.35 + Math.random() * 1.05, a: 0.25 + Math.random() * 0.6, ph: Math.random() * TAU, sp: 0.6 + Math.random() * 1.8 });
+    }
+  }
+  function buildTown() {
+    town = [];
+    const n = Math.round(W / 4.2);
+    for (let k = 0; k < n; k++) {
+      const depth = Math.random();
+      const roll = Math.random();
+      town.push({
+        x: Math.random() * W,
+        dy: -6 - depth * 58 + Math.random() * 5,
+        r: 0.6 + (1 - depth) * 1.5,
+        ph: Math.random() * TAU,
+        sp: 1 + Math.random() * 2.4,
+        col: roll < 0.1 ? "255,120,160" : roll < 0.18 ? "140,225,205" : "255,196,105"
+      });
+    }
+  }
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth || window.innerWidth;
+    H = cv.clientHeight || window.innerHeight;
+    cv.width = Math.round(W * DPR);
+    cv.height = Math.round(H * DPR);
+    const rw = row.getBoundingClientRect().width || 320;
+    R = Math.max(130, rw * 0.58);
+    RY = R * 0.36;
+    tmp.width = Math.ceil(2 * R * DPR);
+    tmp.height = Math.ceil(2 * RY * DPR);
+    buildRangoli();
+    buildStars();
+    buildTown();
+  }
+
+  function spawn(x, y, boost) {
+    if (reduce || embers.length > 260) return;
+    embers.push({
+      x: x + (Math.random() - 0.5) * 6, y,
+      vx: (Math.random() - 0.5) * 16,
+      vy: -(16 + Math.random() * 30) * boost,
+      life: 0, max: 1.3 + Math.random() * 1.9,
+      s: 0.7 + Math.random() * 1.5, ph: Math.random() * TAU
+    });
+  }
+  function burst(d, n) {
+    const b = d.el.getBoundingClientRect();
+    for (let k = 0; k < n; k++) spawn(b.left + b.width / 2, b.top + b.height * 0.3, 1.7);
+  }
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    const t = now / 1000;
+
+    warmth += (lit / 5 - warmth) * Math.min(1, dt * 1.6);
+    finaleK += ((finaleOn ? 1 : 0) - finaleK) * Math.min(1, dt * (finaleOn ? 0.6 : 2.5));
+    diyas.forEach((d) => {
+      d.glow += ((d.lit ? 1 : 0) - d.glow) * Math.min(1, dt * 2.2);
+      const b = d.el.getBoundingClientRect();
+      d.pos = { x: b.left + b.width / 2, y: b.top + b.height * 0.3, foot: b.bottom - 6 };
+    });
+    const rr = row.getBoundingClientRect();
+    const cx = rr.left + rr.width / 2;
+    const cy = rr.bottom - RY * 0.8;
+    const top = cy - RY;
+
+    c.setTransform(DPR, 0, 0, DPR, 0, 0);
+    c.globalCompositeOperation = "source-over";
+    c.globalAlpha = 1;
+
+    const sky = c.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, "#07050c");
+    sky.addColorStop(0.55, "#140c1d");
+    sky.addColorStop(1, "#22122a");
+    c.fillStyle = sky;
+    c.fillRect(0, 0, W, H);
+
+    const gw = warmth + finaleK * 0.45;
+    const rg = c.createRadialGradient(cx, cy + RY, 10, cx, cy + RY, Math.max(W, H) * 0.9);
+    rg.addColorStop(0, `rgba(255,150,60,${0.05 + 0.3 * gw})`);
+    rg.addColorStop(0.45, `rgba(165,55,75,${0.03 + 0.12 * gw})`);
+    rg.addColorStop(1, "rgba(0,0,0,0)");
+    c.fillStyle = rg;
+    c.fillRect(0, 0, W, H);
+
+    for (const s of stars) {
+      const tw = reduce ? 1 : 0.6 + 0.4 * Math.sin(t * s.sp + s.ph);
+      c.globalAlpha = s.a * tw * (1 - 0.3 * gw);
+      c.fillStyle = "#f3e9ff";
+      c.fillRect(s.x, s.y, s.s, s.s);
+    }
+    c.globalAlpha = 1;
+
+    if (finaleK > 0.005) {
+      const band = c.createLinearGradient(0, top - 90, 0, top + 60);
+      band.addColorStop(0, "rgba(255,160,70,0)");
+      band.addColorStop(0.6, `rgba(255,160,70,${0.13 * finaleK})`);
+      band.addColorStop(1, "rgba(255,160,70,0)");
+      c.fillStyle = band;
+      c.fillRect(0, top - 90, W, 150);
+      c.globalCompositeOperation = "lighter";
+      for (const L of town) {
+        const dist = Math.abs(L.x - cx) / Math.max(W / 2, 1);
+        const appear = Math.max(0, Math.min(1, finaleK * 1.8 - dist * 0.8));
+        if (appear <= 0) continue;
+        const fl = reduce ? 1 : 0.75 + 0.25 * Math.sin(t * L.sp + L.ph);
+        const y = top + L.dy;
+        c.fillStyle = `rgba(${L.col},${0.11 * appear * fl})`;
+        c.beginPath(); c.arc(L.x, y, L.r * 3.2, 0, TAU); c.fill();
+        c.fillStyle = `rgba(${L.col},${0.9 * appear * fl})`;
+        c.beginPath(); c.arc(L.x, y, L.r, 0, TAU); c.fill();
+      }
+      c.globalCompositeOperation = "source-over";
+    }
+
+    if (rang) {
+      c.save();
+      c.globalAlpha = 0.07 + 0.04 * warmth;
+      c.translate(cx, cy);
+      c.scale(1, RY / R);
+      c.drawImage(rang, -R, -R, 2 * R, 2 * R);
+      c.restore();
+
+      const tw = 2 * R, th = 2 * RY;
+      t2.setTransform(DPR, 0, 0, DPR, 0, 0);
+      t2.globalCompositeOperation = "source-over";
+      t2.clearRect(0, 0, tw, th);
+      let any = false;
+      for (const d of diyas) {
+        if (d.glow < 0.01) continue;
+        any = true;
+        const lx = d.pos.x - (cx - R);
+        const ly = d.pos.foot - (cy - RY) - RY * 0.35;
+        const rad = R * (0.42 + 0.2 * d.glow);
+        t2.save();
+        t2.translate(lx, ly);
+        t2.scale(1, 0.62);
+        const gr = t2.createRadialGradient(0, 0, 0, 0, 0, rad);
+        gr.addColorStop(0, `rgba(255,255,255,${0.95 * d.glow})`);
+        gr.addColorStop(1, "rgba(255,255,255,0)");
+        t2.fillStyle = gr;
+        t2.fillRect(-rad, -rad, rad * 2, rad * 2);
+        t2.restore();
+      }
+      if (finaleK > 0.005) {
+        any = true;
+        t2.fillStyle = `rgba(255,255,255,${0.8 * finaleK})`;
+        t2.fillRect(0, 0, tw, th);
+      }
+      if (any) {
+        t2.globalCompositeOperation = "source-in";
+        t2.save();
+        t2.translate(R, RY);
+        t2.scale(1, RY / R);
+        t2.drawImage(rang, -R, -R, 2 * R, 2 * R);
+        t2.restore();
+        c.drawImage(tmp, 0, 0, tmp.width, tmp.height, cx - R, cy - RY, tw, th);
+      }
+
+      c.globalCompositeOperation = "lighter";
+      for (const d of diyas) {
+        if (d.glow < 0.01) continue;
+        c.save();
+        c.translate(d.pos.x, d.pos.foot);
+        c.scale(1, 0.45);
+        const pr = R * 0.5;
+        const pg = c.createRadialGradient(0, 0, 0, 0, 0, pr);
+        pg.addColorStop(0, `rgba(255,170,70,${0.22 * d.glow})`);
+        pg.addColorStop(1, "rgba(255,170,70,0)");
+        c.fillStyle = pg;
+        c.fillRect(-pr, -pr, pr * 2, pr * 2);
+        c.restore();
+      }
+      c.globalCompositeOperation = "source-over";
+    }
+
+    if (!reduce) {
+      for (const d of diyas) {
+        if (d.lit && Math.random() < dt * (finaleOn ? 2.4 : 0.8)) spawn(d.pos.x, d.pos.y, 1);
+      }
+      c.globalCompositeOperation = "lighter";
+      for (let k = embers.length - 1; k >= 0; k--) {
+        const e = embers[k];
+        e.life += dt;
+        if (e.life >= e.max) { embers.splice(k, 1); continue; }
+        e.vy *= 1 - dt * 0.35;
+        e.vx *= 1 - dt * 0.8;
+        e.x += e.vx * dt + Math.sin(t * 3 + e.ph) * 0.25;
+        e.y += e.vy * dt;
+        const a = Math.min(1, e.life * 5) * (1 - e.life / e.max);
+        c.fillStyle = `rgba(255,${150 + Math.round(70 * (1 - e.life / e.max))},70,${0.85 * a})`;
+        c.beginPath(); c.arc(e.x, e.y, e.s, 0, TAU); c.fill();
+      }
+      c.globalCompositeOperation = "source-over";
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener("resize", resize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize).catch(() => {});
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
